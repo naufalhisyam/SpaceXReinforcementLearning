@@ -83,9 +83,6 @@ Also don't forget to change video_directory if you want to save videos.
 
 I already saved bunch of network models in **/rocket_saved_networks/** folder.  You can try them out with play function ( feel free to edit if you have custom agents or if you try other networks you may need to load actor model etc.)
 
-
-[![Everything Is AWESOME](youtube.png)](https://www.youtube.com/watch?v=z-j82WmZojY "Everything Is AWESOME")
-
 ## Detailed Medium Post
 
 https://medium.com/@paypaytr/spacex-falcon-9-landing-with-rl-7dde2374eb71
