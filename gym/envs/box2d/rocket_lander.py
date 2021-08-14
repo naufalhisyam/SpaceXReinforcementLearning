@@ -47,6 +47,7 @@ VEL_STATE = True  # Add velocity info to state
 FPS = 60
 SCALE_S = 0.35  # Temporal Scaling, lower is faster - adjust forces appropriately
 INITIAL_RANDOM = 0.4  # Random scaling of initial velocity, higher is more difficult
+IN_RAD = True
 
 START_HEIGHT = 1000.0
 START_SPEED = 80.0
@@ -127,6 +128,7 @@ class RocketLander(gym.Env):
         self.engine = None
         self.ship = None
         self.legs = []
+        self.state = []
 
         high = np.array([1, 1, 1, 1, 1, 1, 1, np.inf, np.inf, np.inf], dtype=np.float32)
         low = -high
@@ -367,7 +369,29 @@ class RocketLander(gym.Env):
             state.extend([vel_l[0],
                           vel_l[1],
                           vel_a])
+            
+        # Untransformed state ------------------------------------------------------------------------------------------
+        
+        x_pos = pos.x - W / 2
+        y_pos = pos.y - self.shipheight
+        
+        theta = self.lander.angle / (np.pi*2.) *360 #in degree
+        if theta > 180:
+            theta -= 360
+        elif theta < -180:
+            theta += 360
+        if IN_RAD:
+            theta *= (np.pi*2) / 360
+            
+        throttle = self.throttle
+        gimbal = self.gimbal
+        lin_vel = np.array(self.lander.linearVelocity)
 
+        self.state = [x_pos, y_pos, theta, throttle, gimbal]
+        
+        if VEL_STATE:
+           self.state.extend([lin_vel[0], lin_vel[1], vel_a])
+           
         # REWARD -------------------------------------------------------------------------------------------------------
 
         # state variables for reward
@@ -531,6 +555,8 @@ class RocketLander(gym.Env):
 
         return self.viewer.render(return_rgb_array=mode == 'rgb_array')
 
+    def get_states_value(self):
+        return self.state
 
 def rgb(r, g, b):
     return float(r) / 255, float(g) / 255, float(b) / 255
