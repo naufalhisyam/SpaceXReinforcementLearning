@@ -385,9 +385,13 @@ class RocketLander(gym.Env):
             
         throttle = self.throttle
         gimbal = self.gimbal
+        
+        l_contact = 1.0 if self.legs[0].ground_contact else 0.0
+        r_contact = 1.0 if self.legs[1].ground_contact else 0.0
+        
         lin_vel = np.array(self.lander.linearVelocity)
 
-        self.state = [x_pos, y_pos, theta, throttle, gimbal]
+        self.state = [x_pos, y_pos, theta, throttle, gimbal,l_contact,r_contact]
         
         if VEL_STATE:
            self.state.extend([lin_vel[0], lin_vel[1], vel_a])
@@ -555,8 +559,35 @@ class RocketLander(gym.Env):
 
         return self.viewer.render(return_rgb_array=mode == 'rgb_array')
 
+
+    # CALLABLE--------------------------------------------------------------------------------------------------------
+    
+    def apply_random_x_disturbance(self, epsilon, left_or_right, x_force=2000):
+        if np.random.rand() < epsilon:
+            if left_or_right:
+                self.apply_disturbance('random', x_force, 0)
+            else:
+                self.apply_disturbance('random', -x_force, 0)
+
+    def apply_random_y_disturbance(self, epsilon, y_force=2000):
+        if np.random.rand() < epsilon:
+            self.apply_disturbance('random', 0, -y_force)
+
     def get_states_value(self):
         return self.state
+    
+    # CALCULATION-----------------------------------------------------------------------------------------------------
+    
+    def apply_disturbance(self, force, *args):
+        if force is not None:
+            if isinstance(force, str):
+                x, y = args
+                self.lander.ApplyForceToCenter((
+                    self.np_random.uniform(x),
+                    self.np_random.uniform(y)
+                ), True)
+            elif isinstance(force, tuple):
+                self.lander.ApplyForceToCenter(force, True)
 
 def rgb(r, g, b):
     return float(r) / 255, float(g) / 255, float(b) / 255
