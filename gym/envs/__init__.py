@@ -136,6 +136,13 @@ register(
     reward_threshold=8,
 )
 
+register(
+    id='RocketLander-v1',
+    entry_point='gym.envs.box2d:RocketLanderTest',
+    max_episode_steps=1000,
+    reward_threshold=8,
+)
+
 # Toy Text
 # ----------------------------------------
 
