@@ -1,7 +1,5 @@
 # SpaceX Falcon 9 Landing with Reinforcement Learning 
 
-# ![GIF](videogifwhatever.gif)
-
 The Falcon 9, developed by aerospace company SpaceX, means it is now possible to reuse the first-stage of the rocket, by flying it safely back to Earth.
 
 An achievement once seemed so impossible that it lead creation of multiple “fake SpaceX landing videos-explanations” now is widely agreed upon about how amazing behind the tech related to it.
