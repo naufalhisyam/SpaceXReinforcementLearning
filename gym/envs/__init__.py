@@ -137,8 +137,15 @@ register(
 )
 
 register(
-    id='RocketLander-v1',
+    id='RocketLanderTest-v0',
     entry_point='gym.envs.box2d:RocketLanderTest',
+    max_episode_steps=1000,
+    reward_threshold=8,
+)
+
+register(
+    id='RocketLanderVertical-v0',
+    entry_point='gym.envs.box2d:RocketLanderVertical',
     max_episode_steps=1000,
     reward_threshold=8,
 )

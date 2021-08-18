@@ -6,5 +6,6 @@ try:
     from gym.envs.box2d.car_racing import CarRacing
     from gym.envs.box2d.rocket_lander import RocketLander
     from gym.envs.box2d.rocket_lander_test import RocketLanderTest
+    from gym.envs.box2d.rocket_lander_vertical import RocketLanderVertical
 except ImportError:
     Box2D = None
