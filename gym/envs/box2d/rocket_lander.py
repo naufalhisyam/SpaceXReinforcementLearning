@@ -129,6 +129,7 @@ class RocketLander(gym.Env):
         self.ship = None
         self.legs = []
         self.state = []
+        self.winds = []
 
         high = np.array([1, 1, 1, 1, 1, 1, 1, np.inf, np.inf, np.inf], dtype=np.float32)
         low = -high
@@ -568,13 +569,20 @@ class RocketLander(gym.Env):
                 self.apply_disturbance('random', x_force, 0)
             else:
                 self.apply_disturbance('random', -x_force, 0)
-
+        else:
+            self.winds = [0, 0]
+            
     def apply_random_y_disturbance(self, epsilon, y_force=2000):
         if np.random.rand() < epsilon:
             self.apply_disturbance('random', 0, -y_force)
+        else:
+            self.winds = [0, 0]
 
     def get_states_value(self):
         return self.state
+    
+    def get_winds_value(self):
+        return self.winds
     
     # CALCULATION-----------------------------------------------------------------------------------------------------
     
@@ -582,9 +590,15 @@ class RocketLander(gym.Env):
         if force is not None:
             if isinstance(force, str):
                 x, y = args
+                
+                windX_force = self.np_random.uniform(x)
+                windY_force = self.np_random.uniform(y)
+                
+                self.winds = [windX_force, windY_force]
+                
                 self.lander.ApplyForceToCenter((
-                    self.np_random.uniform(x),
-                    self.np_random.uniform(y)
+                    windX_force,
+                    windY_force
                 ), True)
             elif isinstance(force, tuple):
                 self.lander.ApplyForceToCenter(force, True)
