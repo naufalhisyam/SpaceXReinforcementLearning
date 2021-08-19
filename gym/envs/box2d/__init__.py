@@ -7,5 +7,6 @@ try:
     from gym.envs.box2d.rocket_lander import RocketLander
     from gym.envs.box2d.rocket_lander_test import RocketLanderTest
     from gym.envs.box2d.rocket_lander_vertical import RocketLanderVertical
+    from gym.envs.box2d.rocket_lander_horizontal import RocketLanderHorizontal
 except ImportError:
     Box2D = None
