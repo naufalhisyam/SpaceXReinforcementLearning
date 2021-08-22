@@ -152,7 +152,7 @@ register(
 
 register(
     id='RocketLanderHorizontal-v0',
-    entry_point='gym.envs.box2d:RocketLanderHorizontal',
+    entry_point='gym.envs.box2d:RocketLanderHrz',
     max_episode_steps=1000,
     reward_threshold=8,
 )

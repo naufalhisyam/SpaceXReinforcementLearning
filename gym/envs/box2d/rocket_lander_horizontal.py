@@ -53,7 +53,7 @@ START_HEIGHT = 1000.0
 START_SPEED = 80.0
 
 # ROCKET
-MIN_THROTTLE = 0
+MIN_THROTTLE = 0.4
 GIMBAL_THRESHOLD = 0.4
 MAIN_ENGINE_POWER = 1600 * SCALE_S
 SIDE_ENGINE_POWER = 100 / FPS * SCALE_S
@@ -111,7 +111,7 @@ class ContactDetector(contactListener):
                 self.env.legs[i].ground_contact = False
 
 
-class RocketLanderHorizontal(gym.Env):
+class RocketLanderHrz(gym.Env):
     metadata = {
         'render.modes': ['human', 'rgb_array'],
         'video.frames_per_second': FPS
@@ -225,7 +225,7 @@ class RocketLanderHorizontal(gym.Env):
 
         self.ship.color1 = (0.2, 0.2, 0.2)
 
-        initial_x = W / 2 + W * np.random.uniform(-0.7, 0.7)
+        initial_x = W / 2 + W * np.random.uniform(-0.3, 0.3)
         initial_y = H * 0.95
         self.lander = self.world.CreateDynamicBody(
             position=(initial_x, initial_y),
@@ -329,7 +329,7 @@ class RocketLanderHorizontal(gym.Env):
                 self.force_dir = 1
 
         self.gimbal = np.clip(self.gimbal, -GIMBAL_THRESHOLD, GIMBAL_THRESHOLD)
-        self.throttle = np.clip(self.throttle, 0.0, 1.0)
+        self.throttle = 0.01
         self.power = 0 if self.throttle == 0.0 else MIN_THROTTLE + self.throttle * (1 - MIN_THROTTLE)
 
         # main engine force
@@ -390,12 +390,12 @@ class RocketLanderHorizontal(gym.Env):
         l_contact = 1.0 if self.legs[0].ground_contact else 0.0
         r_contact = 1.0 if self.legs[1].ground_contact else 0.0
         
-        lin_vel = np.array(self.lander.linearVelocity)
+        lin_vel = self.lander.linearVelocity
 
         self.state = [x_pos, y_pos, theta, throttle, gimbal,l_contact,r_contact]
         
         if VEL_STATE:
-           self.state.extend([lin_vel[0], lin_vel[1], vel_a])
+           self.state.extend([lin_vel.x, lin_vel.y, vel_a])
            
         # REWARD -------------------------------------------------------------------------------------------------------
 

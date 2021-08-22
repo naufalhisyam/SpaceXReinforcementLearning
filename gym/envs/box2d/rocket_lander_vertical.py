@@ -390,12 +390,12 @@ class RocketLanderVertical(gym.Env):
         l_contact = 1.0 if self.legs[0].ground_contact else 0.0
         r_contact = 1.0 if self.legs[1].ground_contact else 0.0
         
-        lin_vel = np.array(self.lander.linearVelocity)
+        lin_vel = self.lander.linearVelocity
 
         self.state = [x_pos, y_pos, theta, throttle, gimbal,l_contact,r_contact]
         
         if VEL_STATE:
-           self.state.extend([lin_vel[0], lin_vel[1], vel_a])
+           self.state.extend([lin_vel.x, lin_vel.y, vel_a])
            
         # REWARD -------------------------------------------------------------------------------------------------------
 
