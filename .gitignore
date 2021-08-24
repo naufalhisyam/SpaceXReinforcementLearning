@@ -2,4 +2,5 @@ rocket_videos/*
 runs/*
 saves/*
 logs/*
+rocket_saved_network/*
 excel_logs/*
